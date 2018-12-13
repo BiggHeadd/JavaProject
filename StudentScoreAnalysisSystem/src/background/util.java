@@ -1,5 +1,6 @@
 package background;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.regex.*;
 
@@ -31,5 +32,29 @@ public class util {
         System.out.println("最高分：" + top);
         System.out.println("最低分：" + min);
         System.out.println("平均分：" + avg);
+    }
+
+
+    public static ArrayList<Student> sortStudents(ArrayList<Student> students){
+        ArrayList<Student> studentSorted = new ArrayList<>();
+        Student studentTop;
+        while(!students.isEmpty()){
+            studentTop = students.get(0);
+            for(Student studentTmp: students){
+                if(studentTmp.biggerThan(studentTop)){
+                    studentTop = studentTmp;
+                }
+            }
+            studentSorted.add(studentTop);
+            students.remove(studentTop);
+            System.out.println(students);
+        }
+        return studentSorted;
+    }
+
+    public static void test(ArrayList<Student> students){
+        while(!students.isEmpty()){
+            students.remove(0);
+        }
     }
 }

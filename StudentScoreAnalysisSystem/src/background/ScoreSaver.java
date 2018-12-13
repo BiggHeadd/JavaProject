@@ -24,7 +24,11 @@ public class ScoreSaver {
     public static void main(String[] args){
         try{
             ScoreScanner ss = new ScoreScanner();
+            ArrayList<Student> student = ss.LoadData("src/data/2014级软件工程8班-面向对象程序设计.txt");
+            ScoreSaver saver = new ScoreSaver();
+            saver.Save(student, "2014级软件工程8班-面向对象程序设计");
             ArrayList<Student> students = ss.LoadDataBytes("2014级软件工程8班-面向对象程序设计");
+            students = util.sortStudents(students);
             util.printScores(students, "2014级软件工程8班-面向对象程序设计");
         }catch(IOException e){
             e.printStackTrace();
