@@ -57,4 +57,22 @@ public class util {
             students.remove(0);
         }
     }
+
+
+    public static void searchStudent(ArrayList<Student> students, String name){
+        boolean flag = false;
+        String target = "";
+        for(Student studentTmp: students){
+            if(studentTmp.getName().contains(name)) {
+//                System.out.println(studentTmp.toString());
+                target = studentTmp.toString();
+                flag = true;
+            }
+        }
+        if(flag) {
+            System.out.println(target);
+        }else{
+            System.out.println("Match Nothing");
+        }
+    }
 }
