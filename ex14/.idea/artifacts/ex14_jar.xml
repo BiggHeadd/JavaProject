@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="ex14:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ex14_jar</output-path>
+    <root id="root">
+      <element id="archive" name="ex14.jar">
+        <element id="module-output" name="ex14" />
+        <element id="module-source" name="ex14" />
+      </element>
+    </root>
+  </artifact>
+</component>

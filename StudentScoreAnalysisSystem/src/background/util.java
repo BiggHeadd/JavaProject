@@ -47,7 +47,7 @@ public class util {
             }
             studentSorted.add(studentTop);
             students.remove(studentTop);
-            System.out.println(students);
+//            System.out.println(students);
         }
         return studentSorted;
     }
