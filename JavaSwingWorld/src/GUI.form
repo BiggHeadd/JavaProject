@@ -23,6 +23,9 @@
           <component id="7338c" class="javax.swing.JTable" binding="table1" default-binding="true">
             <constraints/>
             <properties/>
+            <clientProperties>
+              <JTable.autoStartsEdit class="java.lang.Boolean" value="false"/>
+            </clientProperties>
           </component>
         </children>
       </scrollpane>

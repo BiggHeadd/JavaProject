@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,12 +29,29 @@ public class GUI {
     private JLabel at_avgLabel;
     private JLabel under_avgLabel;
     private JTextField avgtextField;
+    private JMenu topMenu = new JMenu("File");
+    private JMenuBar topMenuBar = new JMenuBar();
+    private JMenuItem topMenuItem = new JMenuItem("open...");
+
+    public Object[][] playerinfo= {
+                {
+                        "wangpeng", 91, 100, 191, true
+                },
+                {
+                        "zhuxuelian", 82, 69, 151, true
+                },
+        };
+
+    public String[] Names = {"name", "chinese", "math", "total", "avg"};
+
 
     public GUI() {
+
+
         goButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(searchField.getText());
+
             }
         });
     }
