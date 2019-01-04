@@ -3,7 +3,10 @@ package frame;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.concurrent.Flow;
+import listener.analysisListener;
 
 public class MainFrame extends JFrame{
     public JMenuBar jMenuBar = new JMenuBar();
@@ -15,6 +18,13 @@ public class MainFrame extends JFrame{
     public JPanel searchPanel = new JPanel();
     public JLabel title = new JLabel("Text Area");
     public JTextField textField = new JTextField();
+    public JButton searchButton = new JButton("search");
+    public JLabel top;
+    public JTextField topText;
+    public JLabel low;
+    public JTextField lowestText;
+    public JLabel avg;
+    public JTextField avgText;
     public JTable table;
 //    public JScrollPane;
 
@@ -29,7 +39,20 @@ public class MainFrame extends JFrame{
         getContentPane().add(searchPanel(), BorderLayout.NORTH);
         getContentPane().add(table(), BorderLayout.WEST);
         getContentPane().add(analysisPanel(), BorderLayout.CENTER);
+        getContentPane().add(bottomInfo(), BorderLayout.SOUTH);
+
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getActionCommand().equals("search")){
+                    textField.setText("nice");
+                    topText.setText("100");
+                }
+            }
+        });
+
         pack();
+        repaint();
     }
 
     public void setFrameargs(){
@@ -54,7 +77,9 @@ public class MainFrame extends JFrame{
         textField.setColumns(12);
         searchPanel.add(title);
         searchPanel.add(textField);
+        searchPanel.add(searchButton);
         searchPanel.setVisible(true);
+
         return searchPanel;
     }
 
@@ -90,9 +115,33 @@ public class MainFrame extends JFrame{
         JPanel score = new JPanel();
         score.add(title);
         score.setLayout(new GridLayout(0,1));
-        score.add(analysisItem("top"));
-        score.add(analysisItem("lowest"));
-        score.add(analysisItem("avg"));
+
+        JPanel itemTop = new JPanel();
+        top = new JLabel("top: ");
+        topText = new JTextField("0.0", 12);
+        topText.setEditable(false);
+        itemTop.setLayout(new FlowLayout());
+        itemTop.add(top, BorderLayout.WEST);
+        itemTop.add(topText, BorderLayout.WEST);
+        score.add(itemTop);//top score
+
+        JPanel itemLowest = new JPanel();
+        low = new JLabel("lowest: ");
+        lowestText = new JTextField("0.0",12);
+        lowestText.setEditable(false);
+        itemLowest.setLayout(new FlowLayout());
+        itemLowest.add(low, BorderLayout.WEST);
+        itemLowest.add(lowestText, BorderLayout.WEST);
+        score.add(itemLowest);//lowest score
+
+        JPanel itemAvg = new JPanel();
+        avg = new JLabel("Avg");
+        avgText = new JTextField("0.0",12);
+        avgText.setEditable(false);
+        itemAvg.setLayout(new FlowLayout());
+        itemAvg.add(avg, BorderLayout.WEST);
+        itemAvg.add(avgText, BorderLayout.WEST);
+        score.add(itemAvg);//avg score
         analysis.add(score);
 
         JPanel percentage = new JPanel();
@@ -106,28 +155,27 @@ public class MainFrame extends JFrame{
         return analysis;
     }
 
-    public JPanel analysisItem(String name){
-        JPanel item = new JPanel();
-        JLabel top = new JLabel(name + ": ");
-        JTextField itemText = new JTextField("0.0", 12);
-        item.setLayout(new FlowLayout());
-        item.add(top, BorderLayout.WEST);
-        item.add(itemText, BorderLayout.WEST);
-        return item;
-    }
-
     public JPanel analysisSort(String name){
         JPanel item = new JPanel();
         JLabel level = new JLabel(name + ": ");
         JTextField itemText = new JTextField("0.0", 12);
+        itemText.setEditable(false);
         JLabel percentageLabel = new JLabel("percentage: ");
         JTextField percentage = new JTextField("0.0",6);
+        percentage.setEditable(false);
         item.setLayout(new FlowLayout());
         item.add(level, BorderLayout.WEST);
         item.add(itemText, BorderLayout.WEST);
         item.add(percentageLabel, BorderLayout.WEST);
         item.add(percentage, BorderLayout.WEST);
         return item;
+    }
+
+    public JPanel bottomInfo(){
+        JPanel bottomPanel = new JPanel(new FlowLayout());
+        JLabel info = new JLabel("E://");
+        bottomPanel.add(info, BorderLayout.WEST);
+        return bottomPanel;
     }
 
     public static void main(String[] args){

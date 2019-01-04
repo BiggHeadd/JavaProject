@@ -45,20 +45,24 @@ public class GUI {
     public String[] Names = {"name", "chinese", "math", "total", "avg"};
 
 
-    public GUI() {
-
+    public GUI(JFrame frame) {
+        highestTextField.setEditable(false);
 
         goButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                    if(e.getActionCommand().equals("go")){
+                        highestTextField.setText("100");
+                        scoreTable.add(new JLabel("test"));
+                        frame.repaint();
+                    }
             }
         });
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("GUI");
-        frame.setContentPane(new GUI().panel);
+        frame.setContentPane(new GUI(frame).panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
