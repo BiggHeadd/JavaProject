@@ -79,6 +79,7 @@ public class MainFrame extends JFrame{
         searchPanel.add(textField);
         searchPanel.add(searchButton);
         searchPanel.setVisible(true);
+        searchPanel.setBounds(400, 600, 100, 300);
 
         return searchPanel;
     }
