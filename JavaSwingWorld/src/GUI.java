@@ -48,13 +48,12 @@ public class GUI {
     public GUI(JFrame frame) {
         highestTextField.setEditable(false);
 
+
         goButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                     if(e.getActionCommand().equals("go")){
                         highestTextField.setText("100");
-                        scoreTable.add(new JLabel("test"));
-                        frame.repaint();
                     }
             }
         });
