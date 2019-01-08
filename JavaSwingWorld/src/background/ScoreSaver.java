@@ -13,8 +13,8 @@ public class ScoreSaver {
 
     }
 
-    public void Save(ArrayList<Student> students, String className)throws FileNotFoundException, IOException {
-        FileOutputStream fileOut = new FileOutputStream("src/data/"+className+".score");
+    public void Save(ArrayList<Student> students, String classNamePath)throws FileNotFoundException, IOException {
+        FileOutputStream fileOut = new FileOutputStream(classNamePath);
         ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
         objectOut.writeObject(students);
         objectOut.close();

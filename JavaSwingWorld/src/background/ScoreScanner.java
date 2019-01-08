@@ -27,7 +27,7 @@ public class ScoreScanner {
     }
 
     public ArrayList<Student> LoadDataBytes(String className) throws IOException, ClassNotFoundException{
-        FileInputStream fileInput = new FileInputStream("src/data/"+className+".score");
+        FileInputStream fileInput = new FileInputStream(className);
         ObjectInputStream objectInput = new ObjectInputStream(fileInput);
         ArrayList<Student> students =  (ArrayList<Student>)objectInput.readObject();
         objectInput.close();

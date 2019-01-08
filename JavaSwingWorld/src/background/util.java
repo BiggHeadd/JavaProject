@@ -9,6 +9,9 @@ public class util {
         double top=0;
         double min=100;
         double avg=0;
+        double excellent=0, good=0, medium=0, at_avg=0, under_avg=0;
+        double excellentPecentage=0, goodPecentage=0, mediumPecentage=0, at_avgPecentage=0, under_avgPecentage=0;
+        int studentNumber = students.size();
         String[] classSubjectInfo = classSubjectName.split("-");
         String className = classSubjectInfo[0];
         String subjectName = classSubjectInfo[1];
@@ -27,12 +30,32 @@ public class util {
                 min = scoreTmp;
             }
             avg += scoreTmp;
+
+            if(scoreTmp>=90){
+                excellent+=1;
+            }else if(scoreTmp>=80){
+                good+=1;
+            }else if(scoreTmp>=70){
+                medium+=1;
+            }else if(scoreTmp>=60){
+                at_avg+=1;
+            }else{
+                under_avg+=1;
+            }
         }
         avg = avg / students.size();
         System.out.println("最高分：" + top);
         System.out.println("最低分：" + min);
         System.out.println("平均分：" + avg);
-        return ""+top+"-"+min+"-"+avg;
+        System.out.println("class numbers: "+students.size());
+        excellentPecentage = excellent/studentNumber*100;
+        goodPecentage = good/studentNumber*100;
+        mediumPecentage = medium/studentNumber*100;
+        at_avgPecentage = at_avg/studentNumber*100;
+        under_avgPecentage = under_avg/studentNumber*100;
+        String json = String.format("%.1f-%.1f-%.1f-%.0f-%.1f-%.0f-%.1f-%.0f-%.1f-%.0f-%.1f-%.0f-%.1f", top, min, avg, excellent,excellentPecentage,good,goodPecentage,medium,mediumPecentage,at_avg,at_avgPecentage,under_avg,under_avgPecentage);
+//        return ""+top+"-"+min+"-"+avg+"-"+excellent+"-"+excellentPecentage+"-"+good+"-"+goodPecentage+"-"+medium+"-"+mediumPecentage+"-"+at_avg+"-"+at_avgPecentage+"-"+under_avg+"-"+under_avgPecentage;
+        return json;
     }
 
 
@@ -76,6 +99,24 @@ public class util {
         }else{
             System.out.println("Match Nothing");
             return null;
+        }
+    }
+
+    public static ArrayList<Student> searchInfo(ArrayList<Student> students, String target){
+        boolean flag = false;
+        ArrayList<Student> targetStudent = new ArrayList<Student>();
+        for(Student studentTmp: students){
+            if(studentTmp.getName().contains(target) || studentTmp.getId().contains(target)){
+                targetStudent.add(studentTmp);
+                flag = true;
+            }
+        }
+        if(flag){
+            return targetStudent;
+        }else{
+            Student a = new Student("fail", "fail", 0);
+            targetStudent.add(a);
+            return targetStudent;
         }
     }
 }
