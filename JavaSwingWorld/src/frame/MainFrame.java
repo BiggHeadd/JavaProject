@@ -1,20 +1,18 @@
 package frame;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.Flow;
 
 import background.ScoreSaver;
 import background.ScoreScanner;
 import background.Student;
 import background.util;
-import listener.analysisListener;
+import org.jfree.chart.ChartPanel;
 
 public class MainFrame extends JFrame implements ActionListener{
     private JMenuBar jMenuBar = new JMenuBar();
@@ -49,6 +47,11 @@ public class MainFrame extends JFrame implements ActionListener{
     private ArrayList<Student> students = null;
     private JButton resetButton = new JButton("reset");
     private String absolutePath;
+    private String studentScoreAnalysis = null;
+    private JButton bartChartButton = new JButton("Bar Chart");
+    private JButton pieChartButton = new JButton("Pie Chart");
+    private JComboBox comboBox = new JComboBox<JLabel>();
+    private int searchMode = 0;//Fuzzy:0 id:1 name:2 score:3
 
     public MainFrame(){
         init();
@@ -67,6 +70,9 @@ public class MainFrame extends JFrame implements ActionListener{
         searchButton.addActionListener(this);
         resetButton.addActionListener(this);
         saveObjectFile.addActionListener(this);
+        bartChartButton.addActionListener(this);
+        pieChartButton.addActionListener(this);
+        comboBox.addActionListener(this);
         pack();
         repaint();
     }
@@ -91,7 +97,12 @@ public class MainFrame extends JFrame implements ActionListener{
     private JPanel searchPanel(){
         searchPanel.setLayout(new FlowLayout());
         searchTextField.setColumns(12);
+        comboBox.addItem("Fuzzy");
+        comboBox.addItem("id");
+        comboBox.addItem("name");
+        comboBox.addItem("score");
         searchPanel.add(title);
+        searchPanel.add(comboBox);
         searchPanel.add(searchTextField);
         searchPanel.add(searchButton);
         searchPanel.add(resetButton);
@@ -176,14 +187,14 @@ public class MainFrame extends JFrame implements ActionListener{
         analysis.add(score);
 
         JPanel percentage = new JPanel();
-        percentage.setLayout(new GridLayout(5, 10));
+        percentage.setLayout(new GridLayout(6, 10));
 
         JPanel item = new JPanel(new GridLayout(1, 2));
-        JLabel excellentLevel = new JLabel("fine:");
-        excellentText = new JTextField("0.0000", 12);
+        JLabel excellentLevel = new JLabel("excellent:");
+        excellentText = new JTextField("0.0", 12);
         excellentText.setEditable(false);
         JLabel excellentPercentageLabel = new JLabel("percentage:");
-        excellentPercentageTextField = new JTextField("0.00000",6);
+        excellentPercentageTextField = new JTextField("0.0",6);
         excellentPercentageTextField.setEditable(false);
         item.setLayout(new FlowLayout());
         percentage.add(excellentLevel, BorderLayout.WEST);
@@ -194,10 +205,10 @@ public class MainFrame extends JFrame implements ActionListener{
 
         item = new JPanel();
         JLabel goodLevel = new JLabel("good:");
-        goodText = new JTextField("0.0000", 12);
+        goodText = new JTextField("0.0", 12);
         goodText.setEditable(false);
         JLabel goodPercentageLabel = new JLabel("percentage:");
-        goodPercentageTextField = new JTextField("0.0000",6);
+        goodPercentageTextField = new JTextField("0.0",6);
         goodPercentageTextField.setEditable(false);
         item.setLayout(new FlowLayout());
         percentage.add(goodLevel, BorderLayout.WEST);
@@ -207,11 +218,11 @@ public class MainFrame extends JFrame implements ActionListener{
         //percentage.add(item);//good
 
         item = new JPanel();
-        JLabel mediumLevel = new JLabel("mid:");
-        mediumText = new JTextField("0.0000", 12);
+        JLabel mediumLevel = new JLabel("medium:");
+        mediumText = new JTextField("0.0", 12);
         mediumText.setEditable(false);
         JLabel mediumPercentageLabel = new JLabel("percentage:");
-        mediumPercentageTextField = new JTextField("0.0000",6);
+        mediumPercentageTextField = new JTextField("0.0",6);
         mediumPercentageTextField.setEditable(false);
         item.setLayout(new FlowLayout());
         percentage.add(mediumLevel, BorderLayout.WEST);
@@ -222,10 +233,10 @@ public class MainFrame extends JFrame implements ActionListener{
 
         item = new JPanel();
         JLabel at_avgLevel = new JLabel("pass:");
-        at_avgText = new JTextField("0.0000", 12);
+        at_avgText = new JTextField("0.0", 12);
         at_avgText.setEditable(false);
         JLabel at_avgPercentageLabel = new JLabel("percentage:");
-        at_avgPercentageTextField = new JTextField("0.0000",6);
+        at_avgPercentageTextField = new JTextField("0.0",6);
         at_avgPercentageTextField.setEditable(false);
         item.setLayout(new FlowLayout());
         percentage.add(at_avgLevel, BorderLayout.WEST);
@@ -236,10 +247,10 @@ public class MainFrame extends JFrame implements ActionListener{
 
         item = new JPanel();
         JLabel under_avgLevel = new JLabel("fail:");
-        under_avgText = new JTextField("0.0000", 12);
+        under_avgText = new JTextField("0.0", 12);
         under_avgText.setEditable(false);
         JLabel under_avgPercentageLabel = new JLabel("percentage:");
-        under_avgPercentageTextField = new JTextField("0.0000",6);
+        under_avgPercentageTextField = new JTextField("0.0",6);
         under_avgPercentageTextField.setEditable(false);
         item.setLayout(new FlowLayout());
         percentage.add(under_avgLevel, BorderLayout.WEST);
@@ -247,6 +258,9 @@ public class MainFrame extends JFrame implements ActionListener{
         percentage.add(under_avgPercentageLabel, BorderLayout.WEST);
         percentage.add(under_avgPercentageTextField, BorderLayout.WEST);
         //percentage.add(item);//at avg
+
+        percentage.add(bartChartButton);
+        percentage.add(pieChartButton);
 
         analysis.add(percentage);
         analysis.setSize(100,1000);
@@ -282,6 +296,7 @@ public class MainFrame extends JFrame implements ActionListener{
                         String exc, good, medium, at_avg, under_avg;
                         String excPecentage, goodPecentage, mediumPecentage, at_avgPecentage, under_avgPecentage;
                         System.out.print(target);
+                        studentScoreAnalysis = target;
                         String[] targetSplit = target.split("-");
                         top = targetSplit[0];
                         min = targetSplit[1];
@@ -356,6 +371,7 @@ public class MainFrame extends JFrame implements ActionListener{
                         String exc, good, medium, at_avg, under_avg;
                         String excPecentage, goodPecentage, mediumPecentage, at_avgPecentage, under_avgPecentage;
                         System.out.print(target);
+                        studentScoreAnalysis = target;
                         String[] targetSplit = target.split("-");
                         top = targetSplit[0];
                         min = targetSplit[1];
@@ -428,7 +444,7 @@ public class MainFrame extends JFrame implements ActionListener{
             }else if(searchTarget.isEmpty()){
                 JOptionPane.showMessageDialog(this, "you have to type something!", "warning", JOptionPane.WARNING_MESSAGE);
             }else{
-                ArrayList<Student> searchResult = util.searchInfo(this.students, searchTarget);
+                ArrayList<Student> searchResult = util.searchInfo(this.students, searchTarget, this.searchMode);
                 class tableModel extends DefaultTableModel{
                     private static final long servialVersionUID = 1L;
                     Object[][] datas;
@@ -489,6 +505,8 @@ public class MainFrame extends JFrame implements ActionListener{
                     JOptionPane.showMessageDialog(this, "no data!", "warning", JOptionPane.WARNING_MESSAGE);
                 }else if(this.absolutePath.contains(".score")){
                     JOptionPane.showMessageDialog(this, "Data is binary already!\nDo no need to Save!", "warning", JOptionPane.WARNING_MESSAGE);
+                }else if(!this.absolutePath.contains("-")){
+                    JOptionPane.showMessageDialog(this, "The Binary File Name Must be\nClassName-CourseName.score");
                 }else{
                     String absolutePath = fileDialog.getSelectedFile().getAbsolutePath();
                     ScoreSaver ss = new ScoreSaver();
@@ -504,6 +522,36 @@ public class MainFrame extends JFrame implements ActionListener{
                     }
                 }
             }
+        }else if(e.getSource() == bartChartButton){
+            if(studentScoreAnalysis == null){
+                JOptionPane.showMessageDialog(this, "No Data!", "warning", JOptionPane.WARNING_MESSAGE);
+            }else{
+                BarChart barChart = new BarChart(this.studentScoreAnalysis);
+                ChartPanel barChartPanel = barChart.getChartPanel();
+                JFrame barChartFrame = new JFrame();
+                barChartFrame.add(barChartPanel);
+                barChartFrame.setSize(500,500);
+                barChartFrame.setLocation(500, 300);
+                barChartFrame.setVisible(true);
+                barChartFrame.setDefaultCloseOperation(2);
+                barChartFrame.setResizable(false);
+            }
+        }else if(e.getSource() == pieChartButton){
+            if(studentScoreAnalysis == null){
+                JOptionPane.showMessageDialog(this, "No Data!", "warning", JOptionPane.WARNING_MESSAGE);
+            }else{
+                PieChart pieChart = new PieChart(this.studentScoreAnalysis);
+                ChartPanel pieChartPanel = pieChart.getChartPanel();
+                JFrame pieChartFrame = new JFrame();
+                pieChartFrame.add(pieChartPanel);
+                pieChartFrame.setSize(1000,600);
+                pieChartFrame.setLocation(500, 300);
+                pieChartFrame.setVisible(true);
+                pieChartFrame.setDefaultCloseOperation(2);
+                pieChartFrame.setResizable(false);
+            }
+        }else if(e.getSource() == comboBox){
+            this.searchMode = comboBox.getSelectedIndex();
         }
     }
 }

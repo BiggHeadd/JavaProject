@@ -102,13 +102,44 @@ public class util {
         }
     }
 
-    public static ArrayList<Student> searchInfo(ArrayList<Student> students, String target){
+    public static ArrayList<Student> searchInfo(ArrayList<Student> students, String target, int searchMode){
         boolean flag = false;
         ArrayList<Student> targetStudent = new ArrayList<Student>();
-        for(Student studentTmp: students){
-            if(studentTmp.getName().contains(target) || studentTmp.getId().contains(target)){
-                targetStudent.add(studentTmp);
-                flag = true;
+        switch(searchMode){
+            case 1: {
+                for(Student studentTmp: students){
+                    if(studentTmp.getId().contains(target)){
+                        targetStudent.add(studentTmp);
+                        flag = true;
+                    }
+                }
+            }
+            break;
+            case 2:{
+                for(Student studentTmp: students){
+                    if(studentTmp.getName().contains(target)){
+                        targetStudent.add(studentTmp);
+                        flag = true;
+                    }
+                }
+            }
+            break;
+            case 3:{
+                for(Student studentTmp: students){
+                    if(studentTmp.getScore() == Integer.valueOf(target)){
+                        targetStudent.add(studentTmp);
+                        flag = true;
+                    }
+                }
+            }
+            break;
+            case 0:{
+                for(Student studentTmp: students){
+                    if(studentTmp.getName().contains(target) || studentTmp.getId().contains(target)){
+                        targetStudent.add(studentTmp);
+                        flag = true;
+                    }
+                }
             }
         }
         if(flag){
